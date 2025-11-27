@@ -1,0 +1,33 @@
+[project]
+name = "jsonclark"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Nahuel Defossé", email = "nahuel.deofsse@ibm.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "lark>=1.3.1",
+]
+
+[project.scripts]
+jsonclark = "jsonclark.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "nox-uv",
+    "pytest-cov",
+]
+
+type_check = [
+    "mypy",
+]
+lint = [
+    "ruff",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.5,<0.10.0"]
+build-backend = "uv_build"
