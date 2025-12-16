@@ -11,6 +11,7 @@ where comments enhance readability. Notable cases are VSCode and Zed editor.
 - Full JSON compatibility (objects, arrays, strings, numbers, booleans, null)
 - Built with Lark for reliable parsing
 - Comprehensive test coverage
+- CLI tool with support for yq expressions to modify JSON while preserving comments
 
 ## Disclaimer
 
@@ -50,6 +51,9 @@ cat config.jsonc | jsonclark --comments
 # Pretty-print from file
 jsonclark config.jsonc
 
+# Apply yq expression to modify JSON (preserves comments for file input)
+jsonclark --yq '.port = 9000' config.jsonc
+
 # All options together
 jsonclark --indent 4 --sort-keys --comments config.jsonc
 ```
@@ -59,8 +63,61 @@ jsonclark --indent 4 --sort-keys --comments config.jsonc
 - `--indent INDENT`: Number of spaces for indentation (default: 2)
 - `--sort-keys`: Sort dictionary keys in output
 - `--comments`: Show extracted comments in the output
+- `--yq EXPRESSION`: Apply a yq expression to modify the JSON. When used with file input, automatically creates a backup (`file.bak`) before modification.
 - `--version`: Show program version
 - `--help`: Show help message
+
+### Using yq for JSON Modification
+
+The `--yq` flag allows you to apply [yq expressions](https://mikefarah.gitbook.io/yq/) to modify your JSON while preserving comments (when operating on files). This is useful for CI/CD pipelines and configuration management.
+
+#### Requirements
+
+The `yq` binary must be installed. Install it with:
+
+**On macOS:**
+```bash
+brew install yq
+```
+
+**From GitHub releases:**
+Visit https://github.com/mikefarah/yq/releases
+
+**Using pip:**
+```bash
+pip install yq
+```
+
+#### Examples
+
+```bash
+# Modify a single key
+jsonclark --yq '.port = 9000' config.jsonc
+
+# Add a new key
+jsonclark --yq '.debug = true' config.jsonc
+
+# Delete a key
+jsonclark --yq 'del(.deprecated_field)' config.jsonc
+
+# Modify nested values
+jsonclark --yq '.server.host = "0.0.0.0"' config.jsonc
+
+# Work with stdin (output to stdout)
+cat config.jsonc | jsonclark --yq '.version = "2.0"'
+```
+
+#### Backup on File Modification
+
+When `--yq` is used with file input, jsonclark automatically creates a backup file:
+
+```bash
+jsonclark --yq '.port = 9000' config.jsonc
+# Creates: config.jsonc.bak (contains the original)
+# Updates: config.jsonc (contains the modified version)
+```
+
+If yq is not installed, you'll see an error message with installation instructions.
 
 
 
@@ -276,8 +333,6 @@ nox -s tests_parser-3.13
 nox -s tests_cli-3.13
 ```
 
-See [NOX_TESTING.md](NOX_TESTING.md) for complete nox documentation.
-
 ### With Pytest
 
 Run the comprehensive test suite:
@@ -286,15 +341,8 @@ Run the comprehensive test suite:
 pytest tests/ -v
 ```
 
-**72 comprehensive tests covering:**
-- Parser functionality (27 tests)
-- Clean interface (18 tests)
-- Pythonic API (26 tests)
-- CLI tool (19 tests)
-
 All tests pass ✅
 
-## Limitations
 ## Limitations
 
 - Comments must follow C-style syntax (`//` and `/* */`)
@@ -303,7 +351,7 @@ All tests pass ✅
 
 ## Requirements
 
-- Python >= 3.13
+- Python >= 3.10
 - Lark >= 1.3.1
 
 ## License
