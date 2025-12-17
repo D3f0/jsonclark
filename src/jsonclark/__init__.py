@@ -15,20 +15,22 @@ Examples:
     >>> data, comments = jsonclark.loads_comments('// Config\\n{"x": 1}')
 """
 
+from importlib.metadata import PackageNotFoundError, version
+
 from jsonclark.parser import (
     JSONDecoder,
     JSONDict,
     JSONList,
     JSONValue,
+    JSONWithCommentsParser,
     extract_comments,
     load,
     load_comments,
-    loads,
-    loads_comments,
     # Backward compatibility aliases
     load_json_preserving_comments,
     load_json_with_comments,
-    JSONWithCommentsParser,
+    loads,
+    loads_comments,
 )
 
 __all__ = [
@@ -49,7 +51,10 @@ __all__ = [
     "JSONWithCommentsParser",
 ]
 
-__version__ = "0.1.0"
+try:
+    __version__ = version("jsonclark")
+except PackageNotFoundError:
+    __version__ = "0.0.0+unknown"
 
 
 def hello() -> str:

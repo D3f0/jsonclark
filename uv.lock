@@ -208,7 +208,6 @@ wheels = [
 
 [[package]]
 name = "jsonclark"
-version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "lark" },
@@ -236,7 +235,7 @@ requires-dist = [
     { name = "pytest-cov", marker = "extra == 'dev'" },
     { name = "ruff", marker = "extra == 'lint'" },
 ]
-provides-extras = ["dev", "type-check", "lint"]
+provides-extras = ["dev", "lint", "type-check"]
 
 [[package]]
 name = "lark"

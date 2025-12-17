@@ -35,7 +35,7 @@ import sys
 import tempfile
 from typing import Any, Optional
 
-from jsonclark import loads, loads_comments
+from jsonclark import __version__, loads, loads_comments
 
 
 def check_yq_available() -> bool:
@@ -266,7 +266,7 @@ def main() -> None:
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.1.0",
+        version=f"%(prog)s {__version__}",
     )
 
     args = parser.parse_args()
