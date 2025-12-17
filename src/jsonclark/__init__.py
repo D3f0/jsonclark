@@ -15,6 +15,7 @@ Examples:
     >>> data, comments = jsonclark.loads_comments('// Config\\n{"x": 1}')
 """
 
+import subprocess
 from importlib.metadata import PackageNotFoundError, version
 
 from jsonclark.parser import (
@@ -51,10 +52,32 @@ __all__ = [
     "JSONWithCommentsParser",
 ]
 
-try:
-    __version__ = version("jsonclark")
-except PackageNotFoundError:
-    __version__ = "0.0.0+unknown"
+
+def _get_version() -> str:
+    """Get version from package metadata or compute dynamically from git tags."""
+    # First try to get version from installed package metadata
+    try:
+        return version("jsonclark")
+    except PackageNotFoundError:
+        pass
+
+    # If not installed, compute dynamically using uv-dynamic-versioning
+    try:
+        result = subprocess.run(
+            ["uvx", "--with", "uv-dynamic-versioning", "hatchling", "version"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return result.stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+
+    # Fallback if all methods fail
+    return "0.0.0+unknown"
+
+
+__version__ = _get_version()
 
 
 def hello() -> str:
