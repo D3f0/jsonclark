@@ -29,6 +29,12 @@ Or with development dependencies:
 pip install "jsonclark[dev]"
 ```
 
+Or run directly from git using `uvx`:
+
+```bash
+uvx --from git+https://github.com/D3f0/jsonclark@main jsonclark --help
+```
+
 ## 🛠️ Command-Line Tool
 
 After installing jsonclark, you can use the `jsonclark` command to pretty-print JSON files with support for comments, similar to Python's `json.tool`:
