@@ -1,0 +1,15 @@
+# .github/actionlint-config.yaml
+
+# Rules to enable/disable
+rules:
+  # Enable all rules by default
+  all: true
+
+# Shellcheck configuration
+shellcheck:
+  # Enable shellcheck for run steps
+  enabled: true
+
+# Pyflakes configuration
+pyflakes:
+  enabled: false

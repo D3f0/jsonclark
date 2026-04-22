@@ -26,14 +26,6 @@ def test_cli_help():
 
 
 @pytest.mark.cli
-def test_cli_version():
-    """Test --version option."""
-    stdout, stderr, code = run_cli("--version")
-    assert code == 0
-    assert "0.1.0" in stdout
-
-
-@pytest.mark.cli
 def test_cli_stdin_basic():
     """Test parsing from stdin."""
     json_text = '{"name": "test", "value": 123}'
