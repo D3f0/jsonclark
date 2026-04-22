@@ -1,12 +1,13 @@
 """Tests for JSON parser with comment support."""
 
 import pytest
-from jsonclark import loads, loads_comments
 from conftest import (
-    JSON_WITH_LINE_COMMENTS,
-    JSON_WITH_BLOCK_COMMENTS,
     COMPLEX_JSON,
+    JSON_WITH_BLOCK_COMMENTS,
+    JSON_WITH_LINE_COMMENTS,
 )
+
+from jsonclark import loads, loads_comments
 
 
 # Basic JSON parsing tests
@@ -197,6 +198,56 @@ def test_nested_comment_markers_in_line_comment():
     json_text = '// This has /* and */ markers\n{"x": 1}'
     result = loads(json_text)
     assert result == {"x": 1}
+
+
+# Trailing comma tests
+@pytest.mark.parser
+def test_trailing_comma_in_object():
+    """Test parsing an object with a trailing comma."""
+    result = loads('{"name": "Alice", "age": 30,}')
+    assert result == {"name": "Alice", "age": 30}
+
+
+@pytest.mark.parser
+def test_trailing_comma_in_array():
+    """Test parsing an array with a trailing comma."""
+    result = loads("[1, 2, 3,]")
+    assert result == [1, 2, 3]
+
+
+@pytest.mark.parser
+def test_trailing_comma_nested_object():
+    """Test parsing nested objects with trailing commas."""
+    json_text = '{"outer": {"inner": "value",},}'
+    result = loads(json_text)
+    assert result == {"outer": {"inner": "value"}}
+
+
+@pytest.mark.parser
+def test_trailing_comma_nested_array():
+    """Test parsing nested arrays with trailing commas."""
+    result = loads("[[1, 2,], [3, 4,],]")
+    assert result == [[1, 2], [3, 4]]
+
+
+@pytest.mark.parser
+def test_trailing_comma_with_comments():
+    """Test trailing comma combined with comments."""
+    json_text = '{\n  "key": "value", // comment\n}'
+    result = loads(json_text)
+    assert result == {"key": "value"}
+
+
+@pytest.mark.parser
+def test_trailing_comma_real_world():
+    """Test a real-world config-style object with trailing commas."""
+    json_text = """\
+{
+  "baseURL": "https://example.com/",
+  "apiKey": "secret",
+}"""
+    result = loads(json_text)
+    assert result == {"baseURL": "https://example.com/", "apiKey": "secret"}
 
 
 # Error handling

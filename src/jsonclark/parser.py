@@ -1,10 +1,9 @@
 """JSON parser with support for comments using Lark."""
 
 from dataclasses import dataclass, field
-from typing import Any, Optional, IO
+from typing import IO, Any, Optional
 
 from lark import Lark, Transformer, v_args
-
 
 # Lark grammar for JSON with comments
 JSON_WITH_COMMENTS_GRAMMAR = r"""
@@ -16,8 +15,8 @@ JSON_WITH_COMMENTS_GRAMMAR = r"""
           | "false"                -> false
           | "null"                 -> null
 
-    array  : "[" [value ("," value)*] "]"
-    object : "{" [pair ("," pair)*] "}"
+    array  : "[" [value ("," value)* ","?] "]"
+    object : "{" [pair ("," pair)* ","?] "}"
     pair   : string ":" value
 
     string : ESCAPED_STRING
