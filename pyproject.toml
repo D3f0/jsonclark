@@ -1,15 +1,43 @@
 [project]
 name = "jsonclark"
 dynamic = ["version"]
-description = "Add your description here"
+description = "Parse JSON files containing C-style comments (// and /* */) while optionally preserving them"
 readme = "README.md"
+license = { text = "MIT" }
 authors = [
-    { name = "Nahuel Defossé", email = "nahuel.deofsse@ibm.com" }
+    { name = "Nahuel Defossé", email = "D3f0@users.noreply.github.com" }
 ]
 requires-python = ">=3.10"
+keywords = [
+    "json",
+    "comments",
+    "jsonc",
+    "parser",
+    "lark",
+    "configuration",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Typing :: Typed",
+]
 dependencies = [
     "lark>=1.3.1",
 ]
+
+[project.urls]
+Homepage = "https://github.com/D3f0/jsonclark"
+Repository = "https://github.com/D3f0/jsonclark"
+"Bug Tracker" = "https://github.com/D3f0/jsonclark/issues"
 
 [project.scripts]
 jsonclark = "jsonclark.__main__:main"
